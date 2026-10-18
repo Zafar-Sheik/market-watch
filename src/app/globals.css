@@ -1,0 +1,101 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #05070c;
+  --color-panel: #0b0f17;
+  --color-line: #1c2433;
+  --color-gold: #f5c451;
+  --color-bull: #2ee6a6;
+  --color-bear: #ff4d6d;
+  --color-sky: #60a5fa;
+  --color-violet: #a78bfa;
+  --font-sans: var(--font-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, monospace;
+
+  --animate-spotlight: spotlight 2s ease 0.75s 1 forwards;
+  --animate-shimmer: shimmer 2.4s linear infinite;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-meteor: meteor 5s linear infinite;
+
+  @keyframes spotlight {
+    0% { opacity: 0; transform: translate(-72%, -62%) scale(0.5); }
+    100% { opacity: 1; transform: translate(-50%, -40%) scale(1); }
+  }
+  @keyframes shimmer {
+    from { background-position: 0 0; }
+    to { background-position: -200% 0; }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  @keyframes meteor {
+    0% { transform: rotate(215deg) translateX(0); opacity: 1; }
+    70% { opacity: 1; }
+    100% { transform: rotate(215deg) translateX(-600px); opacity: 0; }
+  }
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--color-ink);
+}
+
+body {
+  background: var(--color-ink);
+  color: #e2e8f0;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: rgba(245, 196, 81, 0.35);
+}
+
+/* Focus mode: everything but the level you're on fades away */
+body[data-focus="1"] section[data-level] {
+  transition: opacity 0.5s ease, filter 0.5s ease;
+}
+body[data-focus="1"] section[data-level]:not([data-active="1"]) {
+  opacity: 0.12;
+  filter: blur(2px) saturate(0.3);
+}
+
+/* Calm mode: kill non-essential motion */
+html[data-calm="1"] *,
+html[data-calm="1"] *::before,
+html[data-calm="1"] *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  scroll-behavior: auto !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+input[type="range"] {
+  accent-color: var(--color-gold);
+}
+
+.grid-bg {
+  background-image:
+    linear-gradient(to right, rgba(148, 163, 184, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(148, 163, 184, 0.06) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+.text-gradient-gold {
+  background: linear-gradient(180deg, #fff6d6 0%, #f5c451 45%, #b07d12 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
