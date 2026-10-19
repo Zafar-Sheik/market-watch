@@ -1,6 +1,7 @@
 import { Boss } from "@/components/sections/Boss";
 import { Hero, HowItWorks } from "@/components/sections/Hero";
 import { HUD } from "@/components/sections/HUD";
+import { CHAPTERS } from "@/lib/chapters";
 import { L01Candle } from "@/components/sections/L01Candle";
 import { L02Confirmations } from "@/components/sections/L02Confirmations";
 import { L03Structure } from "@/components/sections/L03Structure";
@@ -18,7 +19,7 @@ import { Outro } from "@/components/sections/Outro";
 export default function Home() {
   return (
     <main className="relative pb-28">
-      <HUD />
+      <HUD chapters={CHAPTERS} tab="pa" />
       <Hero />
       <HowItWorks />
       <L01Candle />

@@ -128,6 +128,9 @@ export function Hero() {
           <a href="#boss" className="text-sm font-semibold text-slate-400 underline-offset-4 hover:text-white hover:underline">
             Already know stuff? Skip to the Final Boss →
           </a>
+          <a href="/ict-gold" className="rounded-full border border-gold/40 bg-gold/10 px-3 py-1.5 text-sm font-bold text-gold hover:bg-gold/20">
+            ◆ New: ICT Gold course →
+          </a>
         </div>
       </div>
     </div>

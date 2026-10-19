@@ -3,11 +3,15 @@
 import { AnimatePresence, motion, useScroll, useSpring } from "motion/react";
 import { ChevronDown, ChevronUp, Eye, Leaf, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
-import { CHAPTERS, XP_TOTAL } from "@/lib/chapters";
+import Link from "next/link";
+import { type Chapter, XP_TOTAL } from "@/lib/chapters";
+import { ICT_XP_TOTAL } from "@/lib/ict/extras";
 import { useProgress } from "@/lib/progress";
 import { cn } from "@/lib/utils";
 
-export function HUD() {
+const GRAND_TOTAL = XP_TOTAL + ICT_XP_TOTAL;
+
+export function HUD({ chapters: CHAPTERS, tab }: { chapters: Chapter[]; tab: "pa" | "ict" }) {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 30 });
   const { xp, done, focus, setFocus, calm, setCalm, lastGain } = useProgress();
@@ -51,19 +55,20 @@ export function HUD() {
         <div className="mx-auto flex h-14 max-w-7xl items-center gap-3 px-4">
           <a href="#top" className="flex items-center gap-2 font-bold text-white">
             <Logo />
-            <span className="hidden sm:inline">
+            <span className="hidden 2xl:inline">
               PA<span className="text-gold">/</span>Academy
             </span>
           </a>
+          <TabSwitch tab={tab} />
 
-          <nav className="mx-auto hidden items-center gap-1 lg:flex">
+          <nav className="mx-auto hidden items-center gap-0.5 xl:flex">
             {CHAPTERS.map((c) => (
               <a
                 key={c.id}
                 href={`#${c.id}`}
                 title={c.title}
                 className={cn(
-                  "relative rounded-lg px-2 py-1 font-mono text-[11px] font-semibold transition",
+                  "relative whitespace-nowrap rounded-lg px-1.5 py-1 font-mono text-[11px] font-semibold transition 2xl:px-2",
                   active === c.id ? "text-ink" : done[c.id] ? "text-bull" : "text-slate-500 hover:text-slate-200",
                 )}
               >
@@ -75,13 +80,13 @@ export function HUD() {
             ))}
           </nav>
 
-          <div className="ml-auto flex items-center gap-2 lg:ml-0">
+          <div className="ml-auto flex items-center gap-2 xl:ml-0">
             <Toggle on={focus} onClick={() => setFocus(!focus)} label="Focus" icon={<Eye size={14} />} title="Focus mode (F): fade everything except the current level" />
             <Toggle on={calm} onClick={() => setCalm(!calm)} label="Calm" icon={<Leaf size={14} />} title="Calm mode: turn off decorative animation" />
-            <div className="relative flex items-center gap-1.5 rounded-xl border border-gold/30 bg-gold/10 px-3 py-1.5 font-mono text-xs font-bold text-gold">
+            <div className="relative flex items-center gap-1.5 whitespace-nowrap rounded-xl border border-gold/30 bg-gold/10 px-3 py-1.5 font-mono text-xs font-bold text-gold">
               <Zap size={13} />
               {xp}
-              <span className="hidden text-gold/50 sm:inline">/ {XP_TOTAL} XP</span>
+              <span className="hidden text-gold/50 2xl:inline">/ {GRAND_TOTAL} XP</span>
               <AnimatePresence>
                 {lastGain && (
                   <motion.span
@@ -121,6 +126,24 @@ export function HUD() {
   );
 }
 
+function TabSwitch({ tab }: { tab: "pa" | "ict" }) {
+  return (
+    <div className="flex shrink-0 rounded-xl border border-white/10 bg-white/[0.03] p-0.5 text-xs font-bold">
+      {(
+        [
+          ["pa", "/", "Price Action"],
+          ["ict", "/ict-gold", "ICT Gold"],
+        ] as const
+      ).map(([k, href, label]) => (
+        <Link key={k} href={href} className={cn("relative rounded-lg px-2.5 py-1.5 transition", tab === k ? "text-ink" : "text-slate-400 hover:text-white")}>
+          {tab === k && <motion.span layoutId="tab-pill" className="absolute inset-0 rounded-lg bg-gold" />}
+          <span className="relative whitespace-nowrap">{k === "ict" ? "◆ " : ""}{label}</span>
+        </Link>
+      ))}
+    </div>
+  );
+}
+
 function Toggle({ on, onClick, label, icon, title }: { on: boolean; onClick: () => void; label: string; icon: React.ReactNode; title: string }) {
   return (
     <button
@@ -133,7 +156,7 @@ function Toggle({ on, onClick, label, icon, title }: { on: boolean; onClick: () 
       )}
     >
       {icon}
-      <span className="hidden sm:inline">{label}</span>
+      <span className="hidden 2xl:inline">{label}</span>
     </button>
   );
 }

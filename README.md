@@ -26,6 +26,22 @@ components: spotlight, text-generate, moving-border button, glow cards, meteors)
 
 Plus a persistent pre-trade checklist and an 8-card recap.
 
+## ICT Gold tab (`/ict-gold`)
+
+The full **ICT XAUUSD Master Course — 2026 Edition** rebuilt as 12 modules covering all 30 sections plus the 2026 expansion:
+
+- **Every section** has its visual-map diagram, key takeaway, and tabs for the course text, deep instructor notes, Gold application,
+  common mistakes and the practical study drill ("Mark read" = +10 XP).
+- **12 study-chart replays** (bullish/bearish sweep + MSS + FVG, Asian raid, OTE long/short, Silver Bullet long/short, Gold/Silver SMT,
+  IRL→ERL, long/short playbooks, no-trade) stepped through 1 → 5.
+- **Tools:** dealing-range / premium-discount / OTE / CE calculator, live Silver Bullet & killzone clock (NY → your time → SAST, DST-safe),
+  pre-session bias builder, macro context meter, $2/$5/$10/$20 position-size drill, 12-step daily playbook, 16-box pre-trade checklist,
+  backtest journal with stats and CSV export.
+- **Games:** liquidity sorter, myth buster, Final Master Rule sequence builder, process-vs-outcome matrix, entry-gate walk.
+- **Flash deck:** ~70 Leitner-style flashcards (terms, concepts, Gold facts, myths) plus a searchable glossary.
+
+Content lives in `src/lib/ict/` (`sections.ts`, `extras.ts`); components in `src/components/ict/`.
+
 ## ADHD-friendly design
 
 - Every level has a **time tag** and a **TL;DR** box with the only three things that matter.
