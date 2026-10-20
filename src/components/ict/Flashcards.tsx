@@ -5,7 +5,7 @@ import { RotateCcw, Search, Shuffle } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { Btn } from "@/components/learn/Level";
 import { Burst } from "@/components/ui/confetti";
-import { FLASHCARDS, GLOSSARY, type Flash } from "@/lib/ict/extras";
+import { FLASHCARDS as ICT_CARDS, GLOSSARY, type Flash } from "@/lib/ict/extras";
 import { useProgress } from "@/lib/progress";
 import { useLocal } from "@/lib/useLocal";
 import { cn } from "@/lib/utils";
@@ -18,8 +18,13 @@ const DECK_COLOR: Record<Flash["deck"], string> = { Terms: "#60a5fa", Concepts: 
  * Leitner-style flashcards: "Again" sends a card back to box 0, "Got it" promotes it.
  * Box 3 = mastered. Lowest boxes come up first.
  */
-export function Flashcards() {
-  const [boxes, setBoxes] = useLocal<Record<string, number>>("ict-flash", {});
+export function Flashcards({
+  cards: FLASHCARDS = ICT_CARDS,
+  storageKey = "ict-flash",
+  xpKey = "ict",
+  id = "ict-flash",
+}: { cards?: Flash[]; storageKey?: string; xpKey?: string; id?: string } = {}) {
+  const [boxes, setBoxes] = useLocal<Record<string, number>>(storageKey, {});
   const [deck, setDeck] = useState<Deck>("All");
   const [flipped, setFlipped] = useState(false);
   const [seed, setSeed] = useState(1);
@@ -27,10 +32,10 @@ export function Flashcards() {
   const { award } = useProgress();
 
   const queue = useMemo(() => {
-    const cards = FLASHCARDS.filter((c) => deck === "All" || c.deck === deck);
+    const deckCards = FLASHCARDS.filter((c) => deck === "All" || c.deck === deck);
     const jitter = (id: string) => ((id.charCodeAt(id.length - 1) * 31 + seed * 17) % 97) / 100;
-    return [...cards].sort((a, b) => (boxes[a.id] ?? 0) + jitter(a.id) - ((boxes[b.id] ?? 0) + jitter(b.id)));
-  }, [deck, boxes, seed]);
+    return [...deckCards].sort((a, b) => (boxes[a.id] ?? 0) + jitter(a.id) - ((boxes[b.id] ?? 0) + jitter(b.id)));
+  }, [deck, boxes, seed, FLASHCARDS]);
 
   const card = queue[0];
   const mastered = FLASHCARDS.filter((c) => (boxes[c.id] ?? 0) >= 3).length;
@@ -44,13 +49,13 @@ export function Flashcards() {
     setFlipped(false);
     setSeed((s) => s + 1);
     const m = FLASHCARDS.filter((c) => (next[c.id] ?? 0) >= 3).length;
-    if (m >= 20 && award("ict:flash20", 40)) setBurst((b) => b + 1);
-    if (m === FLASHCARDS.length && award("ict:flashall", 60)) setBurst((b) => b + 1);
+    if (m >= 20 && award(`${xpKey}:flash20`, 40)) setBurst((b) => b + 1);
+    if (m === FLASHCARDS.length && award(`${xpKey}:flashall`, 60)) setBurst((b) => b + 1);
   };
 
   useEffect(() => {
     const h = (e: KeyboardEvent) => {
-      const el = document.getElementById("ict-flash");
+      const el = document.getElementById(id);
       if (!el) return;
       const r = el.getBoundingClientRect();
       if (r.bottom < 0 || r.top > window.innerHeight) return;
@@ -68,10 +73,10 @@ export function Flashcards() {
   });
 
   return (
-    <div id="ict-flash" className="relative rounded-3xl border border-white/[0.08] bg-panel/80 p-4 sm:p-6">
+    <div id={id} className="relative rounded-3xl border border-white/[0.08] bg-panel/80 p-4 sm:p-6">
       {burst > 0 && <Burst key={burst} />}
       <div className="mb-4 flex flex-wrap items-center gap-2">
-        {DECKS.map((d) => (
+        {DECKS.filter((d) => d === "All" || FLASHCARDS.some((c) => c.deck === d)).map((d) => (
           <Btn
             key={d}
             active={deck === d}

@@ -5,13 +5,17 @@ import { ChevronDown, ChevronUp, Eye, Leaf, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { type Chapter, XP_TOTAL } from "@/lib/chapters";
+import { CMP_XP_TOTAL } from "@/lib/compare";
 import { ICT_XP_TOTAL } from "@/lib/ict/extras";
+import { OF_XP_TOTAL } from "@/lib/of/content";
 import { useProgress } from "@/lib/progress";
 import { cn } from "@/lib/utils";
 
-const GRAND_TOTAL = XP_TOTAL + ICT_XP_TOTAL;
+type Tab = "pa" | "ict" | "of" | "all";
 
-export function HUD({ chapters: CHAPTERS, tab }: { chapters: Chapter[]; tab: "pa" | "ict" }) {
+const GRAND_TOTAL = XP_TOTAL + ICT_XP_TOTAL + OF_XP_TOTAL + CMP_XP_TOTAL;
+
+export function HUD({ chapters: CHAPTERS, tab }: { chapters: Chapter[]; tab: Tab }) {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 30 });
   const { xp, done, focus, setFocus, calm, setCalm, lastGain } = useProgress();
@@ -61,7 +65,7 @@ export function HUD({ chapters: CHAPTERS, tab }: { chapters: Chapter[]; tab: "pa
           </a>
           <TabSwitch tab={tab} />
 
-          <nav className="mx-auto hidden items-center gap-0.5 xl:flex">
+          <nav className="mx-auto hidden items-center gap-0.5 2xl:flex">
             {CHAPTERS.map((c) => (
               <a
                 key={c.id}
@@ -80,7 +84,7 @@ export function HUD({ chapters: CHAPTERS, tab }: { chapters: Chapter[]; tab: "pa
             ))}
           </nav>
 
-          <div className="ml-auto flex items-center gap-2 xl:ml-0">
+          <div className="ml-auto flex items-center gap-2 2xl:ml-0">
             <Toggle on={focus} onClick={() => setFocus(!focus)} label="Focus" icon={<Eye size={14} />} title="Focus mode (F): fade everything except the current level" />
             <Toggle on={calm} onClick={() => setCalm(!calm)} label="Calm" icon={<Leaf size={14} />} title="Calm mode: turn off decorative animation" />
             <div className="relative flex items-center gap-1.5 whitespace-nowrap rounded-xl border border-gold/30 bg-gold/10 px-3 py-1.5 font-mono text-xs font-bold text-gold">
@@ -126,18 +130,23 @@ export function HUD({ chapters: CHAPTERS, tab }: { chapters: Chapter[]; tab: "pa
   );
 }
 
-function TabSwitch({ tab }: { tab: "pa" | "ict" }) {
+function TabSwitch({ tab }: { tab: Tab }) {
   return (
     <div className="flex shrink-0 rounded-xl border border-white/10 bg-white/[0.03] p-0.5 text-xs font-bold">
       {(
         [
-          ["pa", "/", "Price Action"],
-          ["ict", "/ict-gold", "ICT Gold"],
+          ["pa", "/", "Price Action", "PA"],
+          ["ict", "/ict-gold", "ICT Gold", "ICT"],
+          ["of", "/order-flow", "Order Flow", "Flow"],
+          ["all", "/compare", "Combined", "All"],
         ] as const
-      ).map(([k, href, label]) => (
-        <Link key={k} href={href} className={cn("relative rounded-lg px-2.5 py-1.5 transition", tab === k ? "text-ink" : "text-slate-400 hover:text-white")}>
+      ).map(([k, href, label, short]) => (
+        <Link key={k} href={href} className={cn("relative rounded-lg px-2 py-1.5 transition sm:px-2.5", tab === k ? "text-ink" : "text-slate-400 hover:text-white")}>
           {tab === k && <motion.span layoutId="tab-pill" className="absolute inset-0 rounded-lg bg-gold" />}
-          <span className="relative whitespace-nowrap">{k === "ict" ? "◆ " : ""}{label}</span>
+          <span className="relative whitespace-nowrap">
+            <span className="md:hidden">{short}</span>
+            <span className="hidden md:inline">{label}</span>
+          </span>
         </Link>
       ))}
     </div>

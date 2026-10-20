@@ -56,7 +56,7 @@ export function usePlayer(steps: Step[], start = 0) {
   return { step, visible, playing, setPlaying, goto, total: steps.length, current: steps[step] };
 }
 
-export function PlayerControls({ p, steps }: { p: ReturnType<typeof usePlayer>; steps: Step[] }) {
+export function PlayerControls({ p, steps, hideText }: { p: ReturnType<typeof usePlayer>; steps: Step[]; hideText?: boolean }) {
   const s = steps[p.step];
   return (
     <div className="mt-4 space-y-3">
@@ -74,12 +74,12 @@ export function PlayerControls({ p, steps }: { p: ReturnType<typeof usePlayer>; 
           />
         ))}
       </div>
-      <div className="min-h-[92px] rounded-2xl border border-white/10 bg-black/30 p-4">
+      {!hideText && <div className="min-h-[92px] rounded-2xl border border-white/10 bg-black/30 p-4">
         <div className="mb-1 font-mono text-[11px] font-bold tracking-[0.18em]" style={{ color: s.color ?? "#f5c451" }}>
           STEP {p.step + 1}/{steps.length} · {s.title.toUpperCase()}
         </div>
         <p className="text-[15px] leading-relaxed text-slate-200">{s.text}</p>
-      </div>
+      </div>}
       <div className="flex flex-wrap gap-2">
         <Btn onClick={() => p.goto(Math.max(0, p.step - 1))} disabled={p.step === 0}>
           <SkipBack size={15} /> Back

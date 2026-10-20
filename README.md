@@ -42,6 +42,22 @@ The full **ICT XAUUSD Master Course — 2026 Edition** rebuilt as 12 modules cov
 
 Content lives in `src/lib/ict/` (`sections.ts`, `extras.ts`); components in `src/components/ict/`.
 
+## Order Flow tab (`/order-flow`)
+
+13 beginner-friendly levels, each with an "explain it simply" analogy, TL;DR, interactive and quick check:
+the auction, a **working order-book (DOM) simulator** with time & sales (market vs limit orders, spoofed walls, icebergs, live mode),
+aggressor-vs-absorber battle, whale-spotting tape reflex game, delta & cumulative delta replays, a **footprint explorer**
+(bid × ask, diagonal imbalances, POC), absorption/exhaustion, volume-profile tap quiz (POC, value area, LVN), VWAP (US30 open),
+trapped traders, a Gold/US30 data-reality picker (spot/CFD tick volume vs GC/MGC/YM/MYM futures + futures→CFD level mapper),
+four order-flow setups, a boss round and a 32-card flash deck. Engine: `src/lib/orderflow.ts`; scenarios: `src/lib/of/`.
+
+## Combined tab (`/compare`)
+
+"One market, three lenses": the same gold chart replayed through Price Action, ICT/SMC and Order Flow overlays with three captions per
+step; a Rosetta-stone translation table + translate game; an interactive Venn of similarities/differences; a head-to-head matrix;
+a "which lens fits you" path finder; a confluence-stack trade grader (context → location → trigger, with a lens-conflict override);
+a pick-the-right-lens quiz; and the combined Gold & US30 daily routine. Content: `src/lib/compare.ts`.
+
 ## ADHD-friendly design
 
 - Every level has a **time tag** and a **TL;DR** box with the only three things that matter.
