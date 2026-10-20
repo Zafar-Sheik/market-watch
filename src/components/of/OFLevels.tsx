@@ -66,7 +66,7 @@ export function OFHero() {
           </div>
         ))}
       </div>
-      <div className="relative z-10 mx-auto flex min-h-[88svh] max-w-6xl flex-col justify-center px-4 pb-24 pt-28 sm:px-6">
+      <div className="relative z-10 mx-auto flex min-h-[88svh] max-w-6xl flex-col justify-center px-4 pb-24 pt-36 sm:px-6">
         <div data-fade className="mb-6 flex flex-wrap gap-2 font-mono text-xs font-bold">
           <span className="rounded-full border border-sky/40 bg-sky/10 px-3 py-1 text-sky">◎ ORDER FLOW · BEGINNER → PRO</span>
           <span className="rounded-full border border-white/10 px-3 py-1 text-slate-400">

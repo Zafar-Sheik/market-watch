@@ -19,7 +19,7 @@ import { Outro } from "@/components/sections/Outro";
 export default function Home() {
   return (
     <main className="relative pb-28">
-      <HUD chapters={CHAPTERS} tab="pa" />
+      <HUD chapters={CHAPTERS} tab="pa" subs={{ boss: [{ id: "checklist", label: "Pre-trade checklist & recap" }] }} />
       <Hero />
       <HowItWorks />
       <L01Candle />

@@ -98,7 +98,7 @@ export function Hero() {
       </svg>
       <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-ink to-transparent" />
 
-      <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-6xl flex-col justify-center px-4 pb-24 pt-28 sm:px-6">
+      <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-6xl flex-col justify-center px-4 pb-24 pt-36 sm:px-6">
         <div data-hero-fade className="mb-6 flex flex-wrap gap-2 font-mono text-xs font-bold">
           <span className="rounded-full border border-gold/40 bg-gold/10 px-3 py-1 text-gold">◆ XAUUSD</span>
           <span className="rounded-full border border-sky/40 bg-sky/10 px-3 py-1 text-sky">▲ US30</span>

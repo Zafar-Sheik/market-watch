@@ -48,7 +48,7 @@ export function CompareHero() {
           <circle key={c as string} data-circle cx={cx as number} cy={cy as number} r={110} fill={c as string} fillOpacity={0.12} stroke={c as string} strokeWidth={2} />
         ))}
       </svg>
-      <div className="relative z-10 mx-auto flex min-h-[88svh] max-w-6xl flex-col justify-center px-4 pb-24 pt-28 sm:px-6">
+      <div className="relative z-10 mx-auto flex min-h-[88svh] max-w-6xl flex-col justify-center px-4 pb-24 pt-36 sm:px-6">
         <div data-fade className="mb-6 flex flex-wrap gap-2 font-mono text-xs font-bold">
           {KEYS.map((k) => (
             <span key={k} className="rounded-full border px-3 py-1" style={{ borderColor: `${LENSES[k].color}66`, color: LENSES[k].color, background: `${LENSES[k].color}12` }}>

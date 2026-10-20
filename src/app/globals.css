@@ -42,7 +42,16 @@
 
 html {
   scroll-behavior: smooth;
+  /* two-row fixed header: keep anchored sections clear of it */
+  scroll-padding-top: 124px;
   background: var(--color-ink);
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
 body {

@@ -4,6 +4,7 @@ import { IctHero, StudyMap } from "@/components/ict/IctHero";
 import { ICTModules } from "@/components/ict/Modules";
 import { HUD } from "@/components/sections/HUD";
 import { INTRO, MODULES } from "@/lib/ict/extras";
+import { sectionByN } from "@/lib/ict/sections";
 
 export const metadata: Metadata = {
   title: "ICT Gold — XAUUSD Master Course | PA/Academy",
@@ -11,14 +12,23 @@ export const metadata: Metadata = {
     "The ICT XAUUSD Master Course as interactive modules: liquidity, structure, PD arrays, Silver Bullet, SMT, Gold execution models, risk, flashcards and a backtest journal.",
 };
 
+const SUBS = Object.fromEntries(
+  MODULES.map((m) => [
+    m.id,
+    m.id === "ict-lab"
+      ? [{ id: "flashcards", label: "Flash deck (70 cards)" }]
+      : m.sections.map((n) => ({ id: `ict-s${n}`, label: `§${n} · ${sectionByN(n).title}` })),
+  ]),
+);
+
 export default function IctGoldPage() {
   return (
     <main className="relative pb-28">
-      <HUD chapters={MODULES} tab="ict" />
+      <HUD chapters={MODULES} tab="ict" subs={SUBS} />
       <IctHero />
       <StudyMap />
       <ICTModules />
-      <section id="flashcards" className="relative mx-auto max-w-6xl scroll-mt-20 px-4 py-20 sm:px-6">
+      <section id="flashcards" className="relative mx-auto max-w-6xl px-4 py-20 sm:px-6">
         <div className="mb-6">
           <div className="font-mono text-[11px] font-bold tracking-[0.2em] text-gold">SPACED REPETITION</div>
           <h2 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">Flash deck</h2>

@@ -78,7 +78,7 @@ export function Level({
       id={chapter.id}
       ref={ref}
       data-level
-      className="relative mx-auto max-w-6xl scroll-mt-20 px-4 py-20 sm:px-6 sm:py-28"
+      className="relative mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28"
     >
       <div
         data-numeral

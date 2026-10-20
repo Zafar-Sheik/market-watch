@@ -25,7 +25,7 @@ export function SectionCard({ s, accent, children }: { s: Section; accent: strin
   const read = !!claimed[`read:ict:${s.n}`];
 
   return (
-    <article id={`ict-s${s.n}`} data-reveal className="scroll-mt-20 overflow-hidden rounded-3xl border border-white/[0.08] bg-panel/80">
+    <article id={`ict-s${s.n}`} data-reveal className="overflow-hidden rounded-3xl border border-white/[0.08] bg-panel/80">
       <header className="flex flex-wrap items-start justify-between gap-3 border-b border-white/[0.06] p-4 sm:p-6">
         <div>
           <div className="font-mono text-[11px] font-bold tracking-[0.2em]" style={{ color: accent }}>

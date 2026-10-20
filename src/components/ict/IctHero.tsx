@@ -54,7 +54,7 @@ export function IctHero() {
       </svg>
       <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-ink to-transparent" />
 
-      <div className="relative z-10 mx-auto flex min-h-[92svh] max-w-6xl flex-col justify-center px-4 pb-40 pt-28 sm:px-6">
+      <div className="relative z-10 mx-auto flex min-h-[92svh] max-w-6xl flex-col justify-center px-4 pb-40 pt-36 sm:px-6">
         <div data-fade className="mb-6 flex flex-wrap gap-2 font-mono text-xs font-bold">
           <span className="rounded-full border border-gold/40 bg-gold/10 px-3 py-1 text-gold">◆ ICT XAUUSD MASTER COURSE — 2026</span>
           <span className="rounded-full border border-white/10 px-3 py-1 text-slate-400">30 sections · 12 modules · {FLASHCARDS.length} flashcards · 12 study charts</span>

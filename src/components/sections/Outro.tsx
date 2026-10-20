@@ -42,7 +42,7 @@ export function Outro() {
   const go = count === CHECK.length;
 
   return (
-    <div id="checklist" className="relative mx-auto max-w-6xl scroll-mt-20 px-4 py-20 sm:px-6">
+    <div id="checklist" className="relative mx-auto max-w-6xl px-4 py-20 sm:px-6">
       <div className="grid gap-8 lg:grid-cols-[1.2fr_1fr]">
         <div>
           <div className="mb-2 font-mono text-[11px] font-bold tracking-[0.2em] text-gold">TAKE THIS TO YOUR CHARTS</div>

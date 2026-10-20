@@ -12,10 +12,10 @@ export const metadata: Metadata = {
 export default function OrderFlowPage() {
   return (
     <main className="relative pb-28">
-      <HUD chapters={OF_LEVELS} tab="of" />
+      <HUD chapters={OF_LEVELS} tab="of" subs={{ "of-boss": [{ id: "of-flash", label: "Flash deck & recap" }] }} />
       <OFHero />
       <OFLevels />
-      <section id="of-flash" className="relative mx-auto max-w-6xl scroll-mt-20 space-y-8 px-4 py-20 sm:px-6">
+      <section id="of-flash" className="relative mx-auto max-w-6xl space-y-8 px-4 py-20 sm:px-6">
         <div>
           <div className="font-mono text-[11px] font-bold tracking-[0.2em] text-sky">SPACED REPETITION</div>
           <h2 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">Order flow flash deck</h2>
