@@ -2,6 +2,7 @@
 
 import { motion, useAnimationFrame, useMotionTemplate, useMotionValue, useTransform } from "motion/react";
 import { useRef } from "react";
+import { useProgress } from "@/lib/progress";
 import { cn } from "@/lib/utils";
 
 /** Aceternity "moving border" button – a glowing dot that orbits the button outline. */
@@ -53,7 +54,9 @@ function MovingBorder({
 }) {
   const pathRef = useRef<SVGRectElement>(null);
   const progress = useMotionValue(0);
+  const { calm } = useProgress();
   useAnimationFrame((time) => {
+    if (calm) return;
     const len = pathRef.current?.getTotalLength();
     if (len) progress.set((time * (len / duration)) % len);
   });

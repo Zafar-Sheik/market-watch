@@ -1,6 +1,8 @@
 "use client";
 
+import { MotionConfig } from "motion/react";
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
+import { applyCalm } from "./calm";
 
 type State = {
   xp: number;
@@ -46,6 +48,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     document.documentElement.dataset.calm = state.calm ? "1" : "0";
+    applyCalm(state.calm);
   }, [state.calm]);
 
   const award = useCallback(
@@ -74,7 +77,8 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
         reset: () => setState(initial),
       }}
     >
-      {children}
+      {/* Calm mode also tells Motion to skip transform/layout animations */}
+      <MotionConfig reducedMotion={state.calm ? "always" : "user"}>{children}</MotionConfig>
     </ProgressContext.Provider>
   );
 }

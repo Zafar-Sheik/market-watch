@@ -31,6 +31,22 @@ export function HUD({ chapters: CHAPTERS, tab, subs }: { chapters: Chapter[]; ta
   const { xp, done, focus, setFocus, calm, setCalm, lastGain } = useProgress();
   const [active, setActive] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
+  const [toast, setToast] = useState<{ t: number; title: string; text: string } | null>(null);
+  const notify = (title: string, text: string) => setToast({ t: Date.now(), title, text });
+  const toggleFocus = () => {
+    notify(focus ? "Focus mode off" : "Focus mode on", focus ? "Everything is back to full brightness." : "Only the block in the middle of your screen stays bright. Scroll to move the spotlight.");
+    setFocus(!focus);
+  };
+  const toggleCalm = () => {
+    notify(calm ? "Calm mode off" : "Calm mode on", calm ? "Animations are back." : "Animations, sparkles and confetti are off. Charts still step when you press Next.");
+    setCalm(!calm);
+  };
+
+  useEffect(() => {
+    if (!toast) return;
+    const id = setTimeout(() => setToast(null), 2600);
+    return () => clearTimeout(id);
+  }, [toast]);
   const railRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -41,6 +57,18 @@ export function HUD({ chapters: CHAPTERS, tab, subs }: { chapters: Chapter[]; ta
 
   useEffect(() => {
     document.body.dataset.focus = focus ? "1" : "0";
+    if (!focus) return;
+    // spotlight: mark the blocks that cross the middle band of the viewport
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => ((e.target as HTMLElement).dataset.infocus = e.isIntersecting ? "1" : "0")),
+      { rootMargin: "-38% 0px -38% 0px" },
+    );
+    const els = document.querySelectorAll<HTMLElement>("section[data-level] [data-reveal], section[data-level] [data-head]");
+    els.forEach((el) => io.observe(el));
+    return () => {
+      io.disconnect();
+      els.forEach((el) => delete el.dataset.infocus);
+    };
   }, [focus]);
 
   // keep the active chip centred in the rail
@@ -64,7 +92,7 @@ export function HUD({ chapters: CHAPTERS, tab, subs }: { chapters: Chapter[]; ta
       if (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.tagName === "SELECT") return;
       if (e.key === "j") jump(1);
       if (e.key === "k") jump(-1);
-      if (e.key === "f") setFocus(!focus);
+      if (e.key === "f") toggleFocus();
       if (e.key === "s" || e.key === "/") {
         e.preventDefault();
         setOpen((o) => !o);
@@ -90,8 +118,8 @@ export function HUD({ chapters: CHAPTERS, tab, subs }: { chapters: Chapter[]; ta
           </a>
           <TabSwitch tab={tab} />
           <div className="ml-auto flex items-center gap-1.5 sm:gap-2">
-            <Toggle on={focus} onClick={() => setFocus(!focus)} label="Focus" icon={<Eye size={14} />} title="Focus mode (F): fade everything except the current section" />
-            <Toggle on={calm} onClick={() => setCalm(!calm)} label="Calm" icon={<Leaf size={14} />} title="Calm mode: turn off decorative animation" />
+            <Toggle on={focus} onClick={toggleFocus} label="Focus" icon={<Eye size={14} />} title="Focus mode (F): spotlight only what you are reading" />
+            <Toggle on={calm} onClick={toggleCalm} label="Calm" icon={<Leaf size={14} />} title="Calm mode: turn off animation, sparkles and confetti" />
             <div className="relative flex items-center gap-1.5 whitespace-nowrap rounded-xl border border-gold/30 bg-gold/10 px-2.5 py-1.5 font-mono text-xs font-bold text-gold">
               <Zap size={13} />
               {xp}
@@ -153,6 +181,33 @@ export function HUD({ chapters: CHAPTERS, tab, subs }: { chapters: Chapter[]; ta
         </div>
         <motion.div className="absolute bottom-0 left-0 h-[2px] w-full origin-left bg-gradient-to-r from-gold via-bull to-sky" style={{ scaleX }} />
       </div>
+
+      {/* focus mode reading ruler: dims the top and bottom of the screen */}
+      <AnimatePresence>
+        {focus && (
+          <motion.div className="pointer-events-none fixed inset-0 z-40" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} aria-hidden>
+            <div className="absolute inset-x-0 top-0 h-[30%] bg-gradient-to-b from-ink via-ink/80 to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-ink via-ink/80 to-transparent" />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* toggle feedback */}
+      <AnimatePresence>
+        {toast && (
+          <motion.div
+            key={toast.t}
+            role="status"
+            className="fixed left-1/2 top-[110px] z-[80] w-[min(92vw,380px)] -translate-x-1/2 rounded-2xl border border-violet/40 bg-panel/95 px-4 py-3 shadow-2xl shadow-black/60 backdrop-blur-xl"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+          >
+            <div className="text-sm font-bold text-violet">{toast.title}</div>
+            <div className="text-xs text-slate-300">{toast.text}</div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <SectionDrawer open={open} onClose={() => setOpen(false)} chapters={CHAPTERS} tab={tab} active={active} subs={subs} />
 

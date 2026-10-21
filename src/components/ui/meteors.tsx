@@ -19,6 +19,7 @@ export function Meteors({ number = 14 }: { number?: number }) {
       {items.map((m, i) => (
         <span
           key={i}
+          data-decor
           className="pointer-events-none absolute top-0 h-0.5 w-0.5 rotate-[215deg] animate-meteor rounded-full bg-gold shadow-[0_0_0_1px_#ffffff10] before:absolute before:top-1/2 before:h-px before:w-[60px] before:-translate-y-1/2 before:bg-gradient-to-r before:from-gold before:to-transparent before:content-['']"
           style={{ left: m.left, animationDelay: `${m.delay}s`, animationDuration: `${m.dur}s` }}
         />

@@ -64,22 +64,38 @@ body {
   background: rgba(245, 196, 81, 0.35);
 }
 
-/* Focus mode: everything but the level you're on fades away */
-body[data-focus="1"] section[data-level] {
-  transition: opacity 0.5s ease, filter 0.5s ease;
+/* Focus mode: a reading spotlight. Only the block in the middle of the screen stays bright
+   (HUD marks it with data-infocus), other levels fade, and a ruler dims the top & bottom. */
+body[data-focus="1"] section[data-level],
+body[data-focus="1"] [data-reveal],
+body[data-focus="1"] [data-head] {
+  transition: opacity 0.35s ease, filter 0.35s ease;
 }
 body[data-focus="1"] section[data-level]:not([data-active="1"]) {
   opacity: 0.12;
   filter: blur(2px) saturate(0.3);
 }
+body[data-focus="1"] section[data-level] [data-reveal]:not([data-infocus="1"]),
+body[data-focus="1"] section[data-level] [data-head]:not([data-infocus="1"]) {
+  opacity: 0.16 !important;
+  filter: blur(1.5px) saturate(0.4);
+}
+body[data-focus="1"] section[data-level] [data-infocus="1"] [data-reveal] {
+  opacity: 1 !important;
+  filter: none;
+}
 
-/* Calm mode: kill non-essential motion */
+/* Calm mode: no CSS animation/transition, no decorative layers, instant scrolling */
 html[data-calm="1"] *,
 html[data-calm="1"] *::before,
 html[data-calm="1"] *::after {
   animation-duration: 0.001ms !important;
   animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
   scroll-behavior: auto !important;
+}
+html[data-calm="1"] [data-decor] {
+  display: none !important;
 }
 
 @media (prefers-reduced-motion: reduce) {

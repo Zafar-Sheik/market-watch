@@ -2,11 +2,13 @@
 
 import { motion } from "motion/react";
 import { useMemo } from "react";
+import { useProgress } from "@/lib/progress";
 
 const COLORS = ["#f5c451", "#2ee6a6", "#60a5fa", "#a78bfa", "#ff4d6d"];
 
 /** Tiny dopamine burst. Render it conditionally; it animates once. */
 export function Burst({ seed = 1 }: { seed?: number }) {
+  const calm = useProgress().calm;
   const parts = useMemo(
     () =>
       Array.from({ length: 22 }, (_, i) => {
@@ -16,6 +18,7 @@ export function Burst({ seed = 1 }: { seed?: number }) {
       }),
     [seed],
   );
+  if (calm) return null;
   return (
     <div className="pointer-events-none absolute left-1/2 top-1/2 z-20">
       {parts.map((p, i) => (

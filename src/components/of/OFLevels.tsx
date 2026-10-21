@@ -57,7 +57,7 @@ export function OFHero() {
       <div className="grid-bg absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]" />
       <Spotlight className="-top-40 left-0 md:-top-20 md:left-60" fill="#60a5fa" />
       {/* animated DOM ladder backdrop */}
-      <div className="pointer-events-none absolute right-[-40px] top-24 hidden w-[420px] space-y-1 opacity-30 md:block" aria-hidden>
+      <div data-decor className="pointer-events-none absolute right-[-40px] top-24 hidden w-[420px] space-y-1 opacity-30 md:block" aria-hidden>
         {Array.from({ length: 22 }, (_, k) => (
           <div key={k} className="grid grid-cols-[1fr_70px_1fr] items-center gap-2 font-mono text-[11px] text-slate-500">
             <div className="flex justify-end">{k >= 11 && <div data-bar className="h-3 w-full rounded-l bg-bull/70" />}</div>
